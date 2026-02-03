@@ -1,0 +1,48 @@
+baseDir = os.path.dirname(os.path.abspath(__file__))
+model_path = os.path.join(baseDir, 'iris')
+data_path = os.path.join(model_path, 'iris.data')
+
+
+
+# First, let's examine your actual data file
+def inspect_iris_data(file_path):
+    """Debug function to inspect the data file"""
+    print(f"Checking file: {file_path}")
+    print(f"File exists: {os.path.exists(file_path)}")
+    
+    if os.path.exists(file_path):
+        # Try reading with different methods
+        with open(file_path, 'r') as f:
+            content = f.read(500)  # Read first 500 chars
+            print("\nFirst 500 characters of file:")
+            print("-" * 50)
+            print(content)
+            print("-" * 50)
+        
+        # Try different delimiters
+        try:
+            print("\nTrying to read with comma delimiter:")
+            df_comma = pd.read_csv(file_path, header=None)
+            print(f"Shape: {df_comma.shape}")
+            print("First 5 rows:")
+            print(df_comma.head())
+        except Exception as e:
+            print(f"Comma delimiter failed: {e}")
+        
+        try:
+            print("\nTrying to read with whitespace delimiter:")
+            df_space = pd.read_csv(file_path, delim_whitespace=True, header=None)
+            print(f"Shape: {df_space.shape}")
+            print("First 5 rows:")
+            print(df_space.head())
+        except Exception as e:
+            print(f"Whitespace delimiter failed: {e}")
+        
+        try:
+            print("\nTrying to read as plain text lines:")
+            with open(file_path, 'r') as f:
+                lines = f.readlines()[:10]
+            for i, line in enumerate(lines):
+                print(f"Line {i}: {line.strip()}")
+        except Exception as e:
+            print(f"Reading lines failed: {e}")
